@@ -1,12 +1,10 @@
-import tensorflow
-import os
+from tensorflow.keras.models import load_model
 import cv2
-import matplotlib.pyplot
-import numpy 
-import Narrator
+from numpy import argmax 
+from Narrator import Narrate
 
 def Start(BasePath,ModelPath):
-    model = tensorflow.keras.models.load_model(ModelPath)
+    model = load_model(ModelPath)
 
     OriginalImage = cv2.imread(BasePath)
     CopyImage = OriginalImage.copy()
@@ -25,7 +23,7 @@ def Start(BasePath,ModelPath):
         Resized = cv2.resize(Digit, (20, 20))
         Reshaped = Resized.reshape(1, 20, 20, 1)
         
-        Prediction = numpy.argmax(model.predict(Reshaped))
+        Prediction = argmax(model.predict(Reshaped))
         StringDigits.append(str(Prediction))
         
         cv2.rectangle(CopyImage, (x, y), (x + w, y + h), (230, 210, 170), 2)
@@ -38,7 +36,7 @@ def Start(BasePath,ModelPath):
     cv2.waitKey(1)
     
     Output = int(Output)
-    Narrator.playsound(Output)
+    Narrate(Output)
     cv2.waitKey(0)
 
 

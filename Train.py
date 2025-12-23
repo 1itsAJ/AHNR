@@ -1,6 +1,6 @@
 import tensorflow
 
-def start(DatasetPath,ModelPath):
+def Start(DatasetPath,ModelPath):
     
     train_dataset = tensorflow.keras.utils.image_dataset_from_directory(
         DatasetPath,
@@ -23,11 +23,11 @@ def start(DatasetPath,ModelPath):
     )
 
     model = tensorflow.keras.models.Sequential([
-        tensorflow.keras.layers.Rescaling(1./255, input_shape=(20, 20, 1)),
-        tensorflow.keras.layers.Conv2D(32, (3, 3), activation='relu', padding='same'),
-        tensorflow.keras.layers.MaxPooling2D((2, 2)),
-        tensorflow.keras.layers.Conv2D(64, (3, 3), activation='relu', padding='same'),
-        tensorflow.keras.layers.MaxPooling2D((2, 2)),
+        tensorflow.keras.layers.Rescaling(1./255, input_shape=(20,20,1)),
+        tensorflow.keras.layers.Conv2D(32, (3,3), activation='relu', padding='same'),
+        tensorflow.keras.layers.MaxPooling2D((2,2)),
+        tensorflow.keras.layers.Conv2D(64, (3,3), activation='relu', padding='same'),
+        tensorflow.keras.layers.MaxPooling2D((2,2)),
         tensorflow.keras.layers.Flatten(),
         tensorflow.keras.layers.Dense(128, activation='relu'),
         tensorflow.keras.layers.Dense(10, activation='softmax')
