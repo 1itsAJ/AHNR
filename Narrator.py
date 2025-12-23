@@ -1,6 +1,7 @@
 import os
 from pydub import AudioSegment
 from pydub.playback import play
+from pydub.effects import speedup
 
 # Path to your recorded files
 Audio = "./Recordings/"
@@ -56,4 +57,5 @@ def Narrate(i):
     Sound = AudioSegment.empty()
     for i in Divisions:
         Sound += Get(i)
+    Sound = speedup(Sound, playback_speed=1.3, chunk_size=140, crossfade=30)
     play(Sound)

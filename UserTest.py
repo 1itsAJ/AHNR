@@ -3,6 +3,12 @@ import cv2
 from numpy import argmax 
 from Narrator import Narrate
 
+
+def Arabic(Text):
+    Text=str(Text)
+    Trans = str.maketrans('0123456789', '٠١٢٣٤٥٦٧٨٩')
+    return Text.translate(Trans)
+
 def Start(BasePath,ModelPath):
     model = load_model(ModelPath)
 
@@ -38,9 +44,3 @@ def Start(BasePath,ModelPath):
     Output = int(Output)
     Narrate(Output)
     cv2.waitKey(0)
-
-
-def Arabic(Text):
-    Text=str(Text)
-    Trans = str.maketrans('0123456789', '٠١٢٣٤٥٦٧٨٩')
-    return Text.translate(Trans)
