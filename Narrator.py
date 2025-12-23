@@ -57,7 +57,7 @@ def narrate_number(n):
     final_audio = AudioSegment.empty()
     for s in segments:
         # Add a tiny 50ms silence between clips for a natural gap
-        final_audio += get_clip(s) + AudioSegment.silent(duration=50)
+        final_audio += get_clip(s)
 
     # 6. Play the result
     play(final_audio)
