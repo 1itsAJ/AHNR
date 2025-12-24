@@ -1,0 +1,5 @@
+pip install pydub
+pip install numpy
+pip install opencv-python
+pip install tensorflow
+pip install simpleaudio
