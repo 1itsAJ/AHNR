@@ -39,7 +39,7 @@ def Start(BasePath,ModelPath):
     print(f"\n Detected Numbers: {Arabic(Output)}\n")
 
     cv2.imshow("Predictions", CopyImage)
-    cv2.waitKey(1)
+    cv2.waitKey(2)
     
     Output = int(Output)
     Narrate(Output)

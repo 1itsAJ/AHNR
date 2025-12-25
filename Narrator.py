@@ -46,8 +46,8 @@ def Narrate(i):
             if Divisions: Divisions.append("and")
             Divisions.append(str(Tens))
 
-    Sound = AudioSegment.empty()
+    Sound = AudioSegment.empty() + AudioSegment.silent(duration=1000)
     for i in Divisions:
-        Sound += Get(i)
-    Sound = speedup(Sound, playback_speed=1.3, chunk_size=140, crossfade=30)
+        Sound += Get(i) + AudioSegment.silent(duration=10)
     play(Sound)
+Narrate(7263)
