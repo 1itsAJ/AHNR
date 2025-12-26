@@ -2,6 +2,7 @@ from tensorflow.keras.models import load_model
 import cv2
 from numpy import argmax 
 from Narrator import Narrate
+import threading
 
 
 def Arabic(Text):
@@ -39,8 +40,8 @@ def Start(BasePath,ModelPath):
     print(f"\n Detected Numbers: {Arabic(Output)}\n")
 
     cv2.imshow("Predictions", CopyImage)
-    cv2.waitKey(2)
-    
+    cv2.waitKey(1)
+
     Output = int(Output)
-    Narrate(Output)
-    cv2.waitKey(0)
+    sound_thread = threading.Thread(target=Narrate, args=(Output,))
+    sound_thread.start()
