@@ -3,7 +3,6 @@ from pydub import AudioSegment
 from pydub.playback import play
 from pydub.effects import speedup
 
-# Path to your recorded files
 Audio = "./Recordings/"
 
 def Get(name):
@@ -11,13 +10,12 @@ def Get(name):
 
 def Narrate(i):
     if not (0 <= i <= 9999):
-        return "Number out of range"
+        return
     
     if i == 0:
         play(Get("0"))
         return
 
-    combined = AudioSegment.empty()
     Divisions = []
 
     Thousands = (i // 1000) * 1000
@@ -46,7 +44,7 @@ def Narrate(i):
             if Divisions: Divisions.append("and")
             Divisions.append(str(Tens))
 
-    Sound = AudioSegment.empty() + AudioSegment.silent(duration=1000)
+    Sound = AudioSegment.silent(duration=1000)
     for i in Divisions:
-        Sound += Get(i) + AudioSegment.silent(duration=10)
+        Sound += Get(i)
     play(Sound)

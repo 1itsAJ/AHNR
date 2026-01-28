@@ -4,7 +4,6 @@ from numpy import argmax
 from Narrator import Narrate
 import threading
 
-
 def Arabic(Text):
     Text=str(Text)
     Trans = str.maketrans('0123456789', '٠١٢٣٤٥٦٧٨٩')
@@ -17,7 +16,7 @@ def Start(BasePath,ModelPath):
     CopyImage = OriginalImage.copy()
 
     GrayImage = cv2.cvtColor(OriginalImage, cv2.COLOR_BGR2GRAY)
-    _, Thresh = cv2.threshold(GrayImage, 127, 255, cv2.THRESH_BINARY_INV)
+    _, Thresh = cv2.threshold(GrayImage, 120, 255, cv2.THRESH_BINARY_INV)
     Contours, _ = cv2.findContours(Thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
     Contours = sorted(Contours, key=lambda c: cv2.boundingRect(c)[0])

@@ -3,10 +3,10 @@ import UserTest
 
 # Train.Start(
 #     "Dataset",            # Dataset path
-#     "AHNRmodelCNN.keras"     # Save model
+#     "AHNRmodel.keras"     # Save model
 # )
 
 UserTest.Start(
-    "./Input/file8.png",             # Test folder path
-    "AHNRmodelCNN.keras"       # Load model
+    "./Input/file11.jpg",             # Test folder path
+    "AHNRmodel.keras"       # Load model
     )
