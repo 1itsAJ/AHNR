@@ -7,6 +7,6 @@ import UserTest
 # )
 
 UserTest.Start(
-    "./Input/file11.jpg",             # Test folder path
+    "./Input/file3.png",             # Test folder path
     "AHNRmodel.keras"       # Load model
     )

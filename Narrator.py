@@ -1,7 +1,6 @@
 import os
 from pydub import AudioSegment
 from pydub.playback import play
-from pydub.effects import speedup
 
 Audio = "./Recordings/"
 
