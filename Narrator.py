@@ -43,7 +43,7 @@ def Narrate(i):
             if Divisions: Divisions.append("and")
             Divisions.append(str(Tens))
 
-    Sound = AudioSegment.silent(duration=1000)
+    Sound = AudioSegment.silent(duration=2000)
     for i in Divisions:
         Sound += Get(i)
     play(Sound)

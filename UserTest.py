@@ -42,5 +42,5 @@ def Start(BasePath,ModelPath):
     cv2.waitKey(1)
 
     Output = int(Output)
-    sound_thread = threading.Thread(target=Narrate, args=(Output,))
-    sound_thread.start()
+    soundthread = threading.Thread(target=Narrate, args=(Output,))
+    soundthread.start()
