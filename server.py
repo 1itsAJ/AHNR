@@ -5,7 +5,7 @@ from numpy import argmax
 from tensorflow.keras.models import load_model
 from pydub import AudioSegment
 from fastapi import FastAPI, Request
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, PlainTextResponse
 
 # 1. Initialize Server and Load Model
 app = FastAPI()
@@ -80,37 +80,40 @@ def Start(ImagePath):
         Resized = cv2.resize(Digit, (20, 20))
         Reshaped = Resized.reshape(1, 20, 20, 1)
         
-        # verbose=0 stops Keras from printing progress bars in the terminal
         Prediction = argmax(model.predict(Reshaped, verbose=0))
         StringDigits.append(str(Prediction))
         
     OutputStr = "".join(StringDigits)
-    print(f"\n >>> Server Detected: {Arabic(OutputStr)} <<<\n")
-
-    # Handle empty strings just in case the image was blank
     if not OutputStr:
         OutputStr = "0"
+        
+    ArabicText = Arabic(OutputStr)
+    print(f"\n >>> Server Detected: {ArabicText} <<<\n")
 
-    OutputInt = int(OutputStr)
-    audio_file_path = Narrate(OutputInt)
+    # Generate and save the audio file in the background
+    Narrate(int(OutputStr))
     
-    return audio_file_path
+    # Return the TEXT this time, not the audio file
+    return OutputStr
 
-# 5. The API Endpoint for MIT App Inventor
+# 5. The API Endpoints
+
+# Door 1: The phone sends the image here and gets TEXT back
 @app.post("/process_image")
 async def process_image(request: Request):
-    # Read the raw image bytes sent by the phone
     body = await request.body()
-    
-    # Save the bytes as an image file
     with open("temp_image.png", "wb") as buffer:
         buffer.write(body)
     
-    # Run the vision pipeline and generate the audio
-    audio_path = Start("temp_image.png")
+    detected_text = Start("temp_image.png")
     
-    # Send the audio file back to the phone
-    return FileResponse(audio_path, media_type="audio/wav")
+    # Send the Arabic text back to the phone
+    return PlainTextResponse(content=detected_text)
+
+# Door 2: The phone's audio player connects here to hear the sound
+@app.get("/get_audio")
+async def get_audio():
+    return FileResponse("final_output.wav", media_type="audio/wav")
 
 # 6. Start the Server
 if __name__ == "__main__":
