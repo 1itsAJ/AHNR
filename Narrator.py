@@ -46,4 +46,5 @@ def Narrate(i):
     Sound = AudioSegment.silent(duration=2000)
     for i in Divisions:
         Sound += Get(i)
-    play(Sound)
+    Sound.export("final_output.wav", format="wav")
+    return "final_output.wav"

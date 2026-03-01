@@ -38,9 +38,5 @@ def Start(BasePath,ModelPath):
     Output = "".join(StringDigits)
     print(f"\n Detected Numbers: {Arabic(Output)}\n")
 
-    cv2.imshow("Predictions", CopyImage)
-    cv2.waitKey(1)
-
     Output = int(Output)
-    soundthread = threading.Thread(target=Narrate, args=(Output,))
-    soundthread.start()
+    Narrate(Output)
