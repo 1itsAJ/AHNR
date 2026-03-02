@@ -1,3 +1,4 @@
+import asyncio
 import os
 import cv2
 import uvicorn
@@ -101,14 +102,27 @@ def Start(ImagePath):
 # Door 1: The phone sends the image here and gets TEXT back
 @app.post("/process_image")
 async def process_image(request: Request):
+    # Read and save the incoming image
     body = await request.body()
     with open("temp_image.png", "wb") as buffer:
         buffer.write(body)
     
-    detected_text = Start("temp_image.png")
-    
-    # Send the Arabic text back to the phone
-    return PlainTextResponse(content=detected_text)
+    try:
+        # Wrap your Start function in a 3.0 second timer
+        detected_text = await asyncio.wait_for(
+            asyncio.to_thread(Start, "temp_image.png"),
+            timeout=3.0
+        )
+        return PlainTextResponse(content=detected_text)
+        
+    except asyncio.TimeoutError:
+        # If it takes longer than 5 seconds, it instantly returns this error
+        print("\n [!] Processing timed out! (Took over 3 seconds)\n")
+        return PlainTextResponse(content="Error: Took too long")
+        
+    except Exception as e:
+        # Catches any other random crashes (like corrupted images)
+        return PlainTextResponse(content=f"Error: {str(e)}")
 
 # Door 2: The phone's audio player connects here to hear the sound
 @app.get("/get_audio")
