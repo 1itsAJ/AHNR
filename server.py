@@ -131,4 +131,4 @@ async def get_audio():
 
 # 6. Start the Server
 if __name__ == "__main__":
-    uvicorn.run(app, host="192.168.0.134", port=8000)
+    uvicorn.run(app, host="192.168.137.1", port=8000)
