@@ -8,7 +8,6 @@ from pydub import AudioSegment
 from fastapi import FastAPI, Request
 from fastapi.responses import FileResponse, PlainTextResponse
 
-# 1. Initialize Server and Load Model
 app = FastAPI()
 model = load_model("AHNRmodel.keras")
 Audio = "./Recordings/"
@@ -22,7 +21,6 @@ def Arabic(Text):
     Trans = str.maketrans('0123456789', '٠١٢٣٤٥٦٧٨٩')
     return Text.translate(Trans)
 
-# 3. The Narration Engine (Saves audio to file)
 def Narrate(i):
     if not (0 <= i <= 9999):
         return None
@@ -60,12 +58,10 @@ def Narrate(i):
     Sound = AudioSegment.silent(duration=2000)
     for val in Divisions:
         Sound += Get(val)
-        
-    # Export the final file instead of playing it
+
     Sound.export("final_output.wav", format="wav")
     return "final_output.wav"
 
-# 4. The Vision Pipeline
 def Start(ImagePath):
     OriginalImage = cv2.imread(ImagePath)
     GrayImage = cv2.cvtColor(OriginalImage, cv2.COLOR_BGR2GRAY)
@@ -90,16 +86,9 @@ def Start(ImagePath):
         
     ArabicText = Arabic(OutputStr)
     print(f"\n >>> Server Detected: {ArabicText} <<<\n")
-
-    # Generate and save the audio file in the background
     Narrate(int(OutputStr))
-    
-    # Return the TEXT this time, not the audio file
     return OutputStr
 
-# 5. The API Endpoints
-
-# Door 1: The phone sends the image here and gets TEXT back
 @app.post("/process_image")
 async def process_image(request: Request):
     # Read and save the incoming image
@@ -108,7 +97,6 @@ async def process_image(request: Request):
         buffer.write(body)
     
     try:
-        # Wrap your Start function in a 3.0 second timer
         detected_text = await asyncio.wait_for(
             asyncio.to_thread(Start, "temp_image.png"),
             timeout=3.0
@@ -116,19 +104,15 @@ async def process_image(request: Request):
         return PlainTextResponse(content=detected_text)
         
     except asyncio.TimeoutError:
-        # If it takes longer than 5 seconds, it instantly returns this error
         print("\n [!] Processing timed out! (Took over 3 seconds)\n")
         return PlainTextResponse(content="Error: Took too long")
         
     except Exception as e:
-        # Catches any other random crashes (like corrupted images)
         return PlainTextResponse(content=f"Error: {str(e)}")
 
-# Door 2: The phone's audio player connects here to hear the sound
 @app.get("/get_audio")
 async def get_audio():
     return FileResponse("final_output.wav", media_type="audio/wav")
 
-# 6. Start the Server
 if __name__ == "__main__":
     uvicorn.run(app, host="192.168.137.1", port=8000)
