@@ -1,5 +1,13 @@
+The code requires these libraries installed for it to work, use these CMD commands:
+
 pip install pydub
 pip install numpy
 pip install opencv-python
 pip install tensorflow
 pip install simpleaudio
+pip install uvicorn
+pip install fastapi
+
+or this one line command:
+
+pip install opencv-python uvicorn numpy tensorflow pydub fastapi simpleaudio

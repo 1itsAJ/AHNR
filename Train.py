@@ -53,3 +53,5 @@ def Start(DatasetPath,ModelPath):
 
     model.save(ModelPath)
     print("Best model saved")
+    
+Start("Dataset","AHNRmodel.keras")
